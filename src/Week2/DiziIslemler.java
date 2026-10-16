@@ -47,5 +47,4 @@ public class DiziIslemler {
        System.out.println("Aranan eleman bulunamadı.");
         return -1;
    }
-   sorgulama(){}
 }
