@@ -1,137 +1,319 @@
+
 package week6;
 
 public class BagliListe {
-	
+
 	Eleman bas;
-	//Eleman son;
-	
-	BagliListe(){
-		bas=null;
-		//son=null;
+	// Eleman son;
+
+	BagliListe() {
+		bas = null;
+		// son = null;
 	}
-	//hazır eleman nesnesi veririm bunu ekle
+
+	// Hazır eleman nesnesini başa ekle
 	void basaEkle(Eleman yeni) {
-		//ilk eleman ekleme
-		if(bas==null) {
-			bas=yeni;
+		if (yeni == null) return;
+
+		if (bas == null) {
+			yeni.ileri = null;
+			bas = yeni;
 			System.out.println("bu ilk eleman");
 			return;
 		}
-		//yeni eleman ilk eleman değilse
-		yeni.ileri=bas;
-		bas=yeni;
+
+		yeni.ileri = bas;
+		bas = yeni;
 	}
-	
-	// sana elemanını özelliklerini veririm bunu yeni bir eleman olarak oluştur ve bunu ekle
+
+	// Verilen bilgilerle yeni eleman oluştur ve başa ekle
 	void basaEkle(String isim, String soyisim, int telNo) {
-		
-		Eleman yeni=new Eleman(isim, soyisim, telNo);
-		
-		if(bas==null) {
-			bas=yeni;
-			System.out.println("bu ilk eleman");
-			return;
-		}
-		
-		//yeni eleman ilk eleman değilse
-		yeni.ileri=bas;
-		bas=yeni;
-		
+
+		Eleman yeni = new Eleman(isim, soyisim, telNo);
+		basaEkle(yeni);
 	}
-	//<>
+
+	// Listeyi yazdır
 	void yazdir() {
-		Eleman gezici=bas;
-		
-		while(gezici!=null) {
-			System.out.println("İsim : " +gezici.isim +" Soy İsim : " +gezici.soyisim +" Tel No : " +gezici.telNo);
-			
+		Eleman gezici = bas;
+
+		if (bas == null) {
+			System.out.println("Liste boş!");
+			return;
+		}
+
+		while (gezici != null) {
+			System.out.println(
+					"İsim : " + gezici.isim +
+							" Soy İsim : " + gezici.soyisim +
+							" Tel No : " + gezici.telNo
+			);
+
 			gezici = gezici.ileri;
-			
 		}
 	}
-	
+
+	// Hazır elemanı sona ekle
 	void sonaEkle(Eleman yeni) {
-		Eleman gezici=bas;
-		Eleman son=bas;
-			
-		//ilk eleman ekleme
-		if(bas==null) {
-			bas=yeni;
+		if (yeni == null) return;
+
+		Eleman gezici = bas;
+
+		if (bas == null) {
+			yeni.ileri = null;
+			bas = yeni;
 			return;
 		}
-		// yeni ilk eleman değilse
-		while(gezici!=null) {
-			//System.out.println("İsim : " +gezici.isim +" Soy İsim : " +gezici.soyisim +" Tel No : " +gezici.telNo);
-			
-			son=gezici;
+
+		while (gezici.ileri != null) {
 			gezici = gezici.ileri;
-			
 		}
-		System.out.println("son eleman : " +son.isim);
-		//yeni eleman sona eklenmiş olacak
-		son.ileri=yeni;
+
+		System.out.println("son eleman : " + gezici.isim);
+
+		yeni.ileri = null;
+		gezici.ileri = yeni;
 	}
-	
+
+	// ÖDEV 1: Bilgilerle sona eleman ekle
 	void sonaEkle(String isim, String soyisim, int telNo) {
-		// siz ödev
+
+		Eleman yeni = new Eleman(isim, soyisim, telNo);
+		sonaEkle(yeni);
 	}
-	//listede olan aranan Elemanın arkasına yeni elemanı eklyecek 
+
+	// ÖDEV 2: Aranan elemanın arkasına ekle
 	void arayaEkle(Eleman aranan, Eleman yeni) {
-		//siz ödev
-	}
-	//verilen sıranodaki elamanın ilerisine yeni elemanı ekleyecek
-	void arayaEkle(int sıraNo, Eleman yeni) {
-		//siz ödev
-	}
-	void bastanSil() {
-		
-		if(bas==null) {
-			System.out.println("liste boş olduğu için silme yapılamaz ! ");
+
+		if (aranan == null || yeni == null) {
+			System.out.println("Geçersiz eleman!");
 			return;
 		}
-		//listede en az bir eleman vardır.
-		
-		bas=bas.ileri;
-	}
 
-	void sondansil(){
-		Eleman gezici=bas;
-		Eleman sonOnceki=bas;
+		Eleman gezici = bas;
 
-		//Hiç elaman yoksa
-		if(bas==null) {
-			return;
-		}
-		// Eğer elaman varsa bir son elaman var ve onu ara
-		while(gezici.ileri!=null) {
-			sonOnceki=gezici;
+		while (gezici != null) {
+
+			if (gezici == aranan) {
+				yeni.ileri = gezici.ileri;
+				gezici.ileri = yeni;
+				return;
+			}
+
 			gezici = gezici.ileri;
+		}
 
-		}
-		// System.out.println("Sondan bir önceki eleman: "+sonOnceki.isim);
-		sonOnceki.ileri=null; //Son elmanı silmek için önceki elamanın ilersini null yapıp refarasnsız bırakılmıştır.
+		System.out.println("Aranan eleman bulunamadı!");
 	}
-	void aradanSil(){
-		//Ödev
-		/*  Sıra numarasına göre silme
-			Belirli bir özelikten sonrasında silme.
-		 */
-	}
-	Eleman arama(String isim){
-		Eleman gezici=bas;
-		//Hiç elaman yoksa çıktısın diye knulmuştur
-		if(bas==null){
-			return null;
+
+	// ÖDEV 3: Verilen sıradaki elemanın arkasına ekle
+	// Sıra numarası 1'den başlar
+	void arayaEkle(int siraNo, Eleman yeni) {
+
+		if (siraNo < 1 || yeni == null) {
+			System.out.println("Geçersiz sıra numarası veya eleman!");
+			return;
 		}
-		while(gezici!=null) {
-			if(gezici.isim==isim){
+
+		Eleman gezici = bas;
+		int sayac = 1;
+
+		while (gezici != null) {
+
+			if (sayac == siraNo) {
+				yeni.ileri = gezici.ileri;
+				gezici.ileri = yeni;
+				return;
+			}
+
+			gezici = gezici.ileri;
+			sayac++;
+		}
+
+		System.out.println("Belirtilen sıra bulunamadı!");
+	}
+
+	// Baştan eleman sil
+	void bastanSil() {
+
+		if (bas == null) {
+			System.out.println(
+					"Liste boş olduğu için silme yapılamaz!"
+			);
+			return;
+		}
+
+		bas = bas.ileri;
+	}
+
+	// Sondan eleman sil
+	void sondansil() {
+
+		Eleman gezici = bas;
+		Eleman sonOnceki = null;
+
+		// Liste boşsa
+		if (bas == null) {
+			System.out.println("Liste boş!");
+			return;
+		}
+
+		// Listede tek eleman varsa
+		if (bas.ileri == null) {
+			bas = null;
+			return;
+		}
+
+		// Son elemanı bul
+		while (gezici.ileri != null) {
+			sonOnceki = gezici;
+			gezici = gezici.ileri;
+		}
+
+		// Sondan bir önceki elemanın bağlantısını kopar
+		sonOnceki.ileri = null;
+	}
+
+	// ÖDEV 4: Sıra numarasına göre eleman sil
+	// Sıra numarası 1'den başlar
+	void aradanSil(int siraNo) {
+
+		if (bas == null) {
+			System.out.println("Liste boş!");
+			return;
+		}
+
+		if (siraNo < 1) {
+			System.out.println("Geçersiz sıra numarası!");
+			return;
+		}
+
+		if (siraNo == 1) {
+			bastanSil();
+			return;
+		}
+
+		Eleman gezici = bas;
+		int sayac = 1;
+
+		while (gezici != null && sayac < siraNo - 1) {
+			gezici = gezici.ileri;
+			sayac++;
+		}
+
+		if (gezici == null || gezici.ileri == null) {
+			System.out.println("Silinecek eleman bulunamadı!");
+			return;
+		}
+
+		gezici.ileri = gezici.ileri.ileri;
+	}
+
+	// ÖDEV 5: İsme göre ilk eşleşen elemanı sil
+	void aradanSil(String isim) {
+
+		if (bas == null) {
+			System.out.println("Liste boş!");
+			return;
+		}
+
+		// İlk eleman aranıyorsa
+		if (bas.isim.equals(isim)) {
+			bastanSil();
+			return;
+		}
+
+		Eleman gezici = bas;
+
+		while (gezici.ileri != null) {
+
+			if (gezici.ileri.isim.equals(isim)) {
+				gezici.ileri = gezici.ileri.ileri;
+				return;
+			}
+
+			gezici = gezici.ileri;
+		}
+
+		System.out.println("Aranan " + isim + " bulunamadı!");
+	}
+
+	// İlk eşleşen elemanı ara
+	Eleman arama(String isim) {
+
+		Eleman gezici = bas;
+
+		while (gezici != null) {
+
+			if (gezici.isim.equals(isim)) {
 				return gezici;
 			}
-			gezici = gezici.ileri;
 
+			gezici = gezici.ileri;
 		}
-		//Aranan değer bulunamadığı için null döndürür.
-		System.out.println("Aranan "+isim+ " bulunamadı");
+
+		System.out.println("Aranan " + isim + " bulunamadı!");
 		return null;
 	}
+
+	// ÖDEV 6: İsim ve soyisim ile ara
+	Eleman arama(String isim, String soyisim) {
+
+		Eleman gezici = bas;
+
+		while (gezici != null) {
+
+			if (gezici.isim.equals(isim) &&
+					gezici.soyisim.equals(soyisim)) {
+				return gezici;
+			}
+
+			gezici = gezici.ileri;
+		}
+
+		System.out.println("Aranan kişi bulunamadı!");
+		return null;
+	}
+
+	// Aynı isimdeki bütün elemanları ara
+	// Eski ikinci arama(String isim) metodu
+	// Derleme hatası olmaması için isim değiştirildi
+	Eleman[] tumunuAra(String isim) {
+
+		Eleman gezici = bas;
+		int sayac = 0;
+
+		// Önce eşleşen eleman sayısını bul
+		while (gezici != null) {
+
+			if (gezici.isim.equals(isim)) {
+				sayac++;
+			}
+
+			gezici = gezici.ileri;
+		}
+
+		// Tam gereken büyüklükte dizi oluştur
+		Eleman[] dizi = new Eleman[sayac];
+
+		gezici = bas;
+		int diziIndex = 0;
+
+		while (gezici != null) {
+
+			if (gezici.isim.equals(isim)) {
+				dizi[diziIndex++] = gezici;
+			}
+
+			gezici = gezici.ileri;
+		}
+
+		return dizi;
+	}
+	 // void Eleman[ ] sorgulama(){ ODEV}
+
+	//oluştururaln bağlı listenin kopyalanması
+
+
+
 }
