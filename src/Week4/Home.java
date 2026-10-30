@@ -17,7 +17,16 @@ public class Home {
         this.soyad=soyad;
         this.daireNo=daireNo;
         this.blockNo=blockNo;
-        this.dolumu=true;
+        dolumu=true;
+    }
+    void sakinsil(int  daireNo,int blockNo){
+        //Sakin arama yap sonra sil
+        this.ad=null;
+        this.soyad=null;
+        dolumu=false;
+    }
+    void daireozelikleriyazdir(){
+        System.out.println(" adı: "+ad+" "+" soyadi: "+soyad +" "+"Daireno: "+daireNo +" "+"Block No: "+blockNo);
     }
 
 }
